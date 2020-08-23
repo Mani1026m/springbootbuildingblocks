@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.stac.simplify.restservices.entities.User;
+import com.stac.simplify.restservices.exceptions.UserNotFoundException;
 import com.stac.simplify.restservices.repositories.UserRepository;
 
 //Service
@@ -29,12 +30,16 @@ public class UserService {
 	}
 	
 	//Get user by ID
-	
-	public Optional<User> getUserById(Long id) {
-		
+	public Optional<User> getUserById(Long id) throws UserNotFoundException{
 		Optional<User> user = userRepository.findById(id);
+		
+		if(!user.isPresent()) {
+			throw new UserNotFoundException("User not found in user repository");
+		}
 		return user;
 	}
+	
+	
 	
 	//UpdateUserById
 	
@@ -51,9 +56,12 @@ public class UserService {
 		}
 	}
 	
+
 	//getUserByUsername
 	
-	public User getUserByUsername(String username) {
-		return userRepository.findByUsername(username);
-	}
+//	public User getUserByUsername(String username) {
+//		return userRepository.findByUsername(username);
+//	}
+	
+	
 }
